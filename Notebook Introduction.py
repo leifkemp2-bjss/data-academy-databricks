@@ -4,6 +4,7 @@ message = "Welcome to the Databricks Notebook Experience"
 # COMMAND ----------
 
 print(message)
+print(f"Foo bar this is my message: {message}")
 
 # COMMAND ----------
 
