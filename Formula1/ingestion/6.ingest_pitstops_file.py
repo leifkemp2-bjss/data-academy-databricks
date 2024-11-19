@@ -65,11 +65,18 @@ pitstops_final_df = pitstops_ingestion_date_df.withColumnRenamed("raceId", "race
 
 # COMMAND ----------
 
-pitstops_final_df.write.mode("overwrite").parquet(f"{processed_folder_path}/pit_stops")
+# MAGIC %sql
+# MAGIC DROP TABLE IF EXISTS f1_processed.pit_stops
 
 # COMMAND ----------
 
-display(spark.read.parquet("/mnt/formula1dllk/processed/pit_stops"))
+# pitstops_final_df.write.mode("overwrite").parquet(f"{processed_folder_path}/pit_stops")
+pitstops_final_df.write.mode("overwrite").format("delta").saveAsTable("f1_processed.pit_stops")
+
+
+# COMMAND ----------
+
+display(spark.read.load("/mnt/formula1dllk/processed/pit_stops"))
 
 # COMMAND ----------
 

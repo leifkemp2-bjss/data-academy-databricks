@@ -69,7 +69,14 @@ qualifying_final_df = qualifying_ingestion_date_df.withColumnRenamed("qualifyId"
 
 # COMMAND ----------
 
-qualifying_final_df.write.mode("overwrite").parquet(f"{processed_folder_path}/qualifying")
+# MAGIC %sql
+# MAGIC DROP TABLE IF EXISTS f1_processed.qualifying
+
+# COMMAND ----------
+
+# qualifying_final_df.write.mode("overwrite").parquet(f"{processed_folder_path}/qualifying")
+qualifying_final_df.write.mode("overwrite").format("delta").saveAsTable("f1_processed.qualifying")
+
 
 # COMMAND ----------
 

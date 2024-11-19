@@ -61,7 +61,14 @@ lap_times_final_df = lap_times_ingestion_date_df.withColumnRenamed("driverId", "
 
 # COMMAND ----------
 
-lap_times_final_df.write.mode("overwrite").parquet(f"{processed_folder_path}/lap_times")
+# MAGIC %sql
+# MAGIC DROP TABLE IF EXISTS f1_processed.lap_times
+
+# COMMAND ----------
+
+# lap_times_final_df.write.mode("overwrite").parquet(f"{processed_folder_path}/lap_times")
+lap_times_final_df.write.mode("overwrite").format("delta").saveAsTable("f1_processed.lap_times")
+
 
 # COMMAND ----------
 

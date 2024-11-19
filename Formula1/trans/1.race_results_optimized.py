@@ -63,7 +63,7 @@ display(compareAgainstADGP(race_results_df))
 # COMMAND ----------
 
 final_df = race_results_df \
-    .select("race_year", "race_name", "race_date", "circuit_location", "driver_name", "driver_number", "driver_nationality", "team", "grid", "fastest_lap", "race_time", "points") \
+    .select("race_year", "race_name", "race_date", "circuit_location", "driver_name", "driver_number", "driver_nationality", "team", "grid", "fastest_lap", "race_time", "points", "position") \
     .withColumn("created_date", current_timestamp()) \
     .orderBy("points", ascending=False) \
     
@@ -78,7 +78,9 @@ display(compareAgainstADGP(final_df))
 
 # COMMAND ----------
 
-final_df.write.mode("overwrite").parquet(f"{presentation_folder_path}/race_results")
+# races_final_df.write.mode("overwrite").parquet(f"{presentation_folder_path}/race_results")
+final_df.write.mode("overwrite").format("parquet").saveAsTable("f1_presentation.race_results")
+
 
 # COMMAND ----------
 

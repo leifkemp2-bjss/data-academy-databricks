@@ -58,7 +58,14 @@ display(constructor_final_df)
 
 # COMMAND ----------
 
-constructor_final_df.write.mode("overwrite").parquet(f"{processed_folder_path}d/constructors")
+# MAGIC %sql
+# MAGIC DROP TABLE IF EXISTS f1_processed.constructors
+
+# COMMAND ----------
+
+# constructor_final_df.write.mode("overwrite").parquet(f"{processed_folder_path}d/constructors")
+constructor_final_df.write.mode("overwrite").format("delta").saveAsTable("f1_processed.constructors")
+
 
 # COMMAND ----------
 

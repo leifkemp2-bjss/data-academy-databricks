@@ -84,7 +84,14 @@ display(results_final_df)
 
 # COMMAND ----------
 
-results_final_df.write.mode("overwrite").partitionBy("race_id").parquet(f"{processed_folder_path}/results")
+# MAGIC %sql
+# MAGIC DROP TABLE IF EXISTS f1_processed.results
+
+# COMMAND ----------
+
+# results_final_df.write.mode("overwrite").partitionBy("race_id").parquet(f"{processed_folder_path}/results")
+results_final_df.write.mode("overwrite").format("delta").saveAsTable("f1_processed.results")
+
 
 # COMMAND ----------
 

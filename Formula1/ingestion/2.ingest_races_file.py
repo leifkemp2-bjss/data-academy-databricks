@@ -82,7 +82,13 @@ display(races_final_df)
 
 # COMMAND ----------
 
-races_final_df.write.mode("overwrite").partitionBy("race_year").parquet(f"{processed_folder_path}/races")
+# MAGIC %sql
+# MAGIC DROP TABLE IF EXISTS f1_processed.races
+
+# COMMAND ----------
+
+# races_final_df.write.mode("overwrite").partitionBy("race_year").parquet(f"{processed_folder_path}/races")
+races_final_df.write.mode("overwrite").format("delta").saveAsTable("f1_processed.races")
 # mode("overwrite") is necessary to prevent the code from producing an error over the data already existing
 
 # COMMAND ----------
@@ -92,7 +98,7 @@ races_final_df.write.mode("overwrite").partitionBy("race_year").parquet(f"{proce
 
 # COMMAND ----------
 
-df = spark.read.parquet("/mnt/formula1dllk/processed/races")
+df = spark.read.load("/mnt/formula1dllk/processed/races")
 display(df)
 
 # COMMAND ----------

@@ -96,7 +96,14 @@ circuits_final_df = add_ingestion_date(circuits_renamed_df)
 
 # COMMAND ----------
 
-circuits_final_df.write.mode("overwrite").parquet(f"{processed_folder_path}/circuits")
+# MAGIC %sql
+# MAGIC DROP TABLE IF EXISTS f1_processed.circuits
+
+# COMMAND ----------
+
+# circuits_final_df.write.mode("overwrite").parquet(f"{processed_folder_path}/circuits")
+# circuits_final_df.write.mode("overwrite").format("parquet").saveAsTable("f1_processed.circuits")
+circuits_final_df.write.mode("overwrite").format("delta").saveAsTable("f1_processed.circuits")
 # mode("overwrite") is necessary to prevent the code from producing an error over the data already existing
 
 # COMMAND ----------
