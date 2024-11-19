@@ -15,11 +15,11 @@ def compareAgainstADGP(df):
 
 # COMMAND ----------
 
-races_df = spark.read.parquet(f"{processed_folder_path}/races")
-results_df = spark.read.parquet(f"{processed_folder_path}/results")
-drivers_df = spark.read.parquet(f"{processed_folder_path}/drivers")
-circuits_df = spark.read.parquet(f"{processed_folder_path}/circuits")
-constructors_df = spark.read.parquet(f"{processed_folder_path}/constructors")
+races_df = spark.read.format("delta").load(f"{processed_folder_path}/races")
+results_df = spark.read.format("delta").load(f"{processed_folder_path}/results")
+drivers_df = spark.read.format("delta").load(f"{processed_folder_path}/drivers")
+circuits_df = spark.read.format("delta").load(f"{processed_folder_path}/circuits")
+constructors_df = spark.read.format("delta").load(f"{processed_folder_path}/constructors")
 
 # COMMAND ----------
 
@@ -78,10 +78,15 @@ display(compareAgainstADGP(final_df))
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC DROP TABLE IF EXISTS f1_presentation.race_results
+
+# COMMAND ----------
+
 # races_final_df.write.mode("overwrite").parquet(f"{presentation_folder_path}/race_results")
-final_df.write.mode("overwrite").format("parquet").saveAsTable("f1_presentation.race_results")
+final_df.write.mode("overwrite").format("delta").saveAsTable("f1_presentation.race_results")
 
 
 # COMMAND ----------
 
-display(compareAgainstADGP(spark.read.parquet(f"{presentation_folder_path}/race_results")))
+display(compareAgainstADGP(spark.read.format("delta").load(f"{presentation_folder_path}/race_results")))

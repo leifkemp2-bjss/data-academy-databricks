@@ -3,8 +3,12 @@ USE f1_processed;
 
 -- COMMAND ----------
 
+DROP TABLE IF EXISTS f1_presentation.calculated_race_results
+
+-- COMMAND ----------
+
 CREATE TABLE f1_presentation.calculated_race_results
-USING parquet
+USING DELTA
 AS
 SELECT  races.race_year,
         constructors.name as team_name,

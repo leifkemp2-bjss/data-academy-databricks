@@ -3,7 +3,7 @@
 
 # COMMAND ----------
 
-race_results_df = spark.read.parquet(f"{presentation_folder_path}/race_results")
+race_results_df = spark.read.format("delta").load(f"{presentation_folder_path}/race_results")
 
 # COMMAND ----------
 
@@ -36,6 +36,11 @@ display(final_df.filter("race_year = 2020"))
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC DROP TABLE IF EXISTS f1_presentation.driver_standings
+
+# COMMAND ----------
+
 # final_df.write.mode("overwrite").parquet(f"{presentation_folder_path}/driver_standings")
-final_df.write.mode("overwrite").format("parquet").saveAsTable("f1_presentation.driver_standings")
+final_df.write.mode("overwrite").format("delta").saveAsTable("f1_presentation.driver_standings")
 
